@@ -7,6 +7,8 @@ const workoutModel = require("../models/workoutModel");
 const dietModel = require("../models/dietModel");
 var ShoutoutClient = require('shoutout-sdk');
 
+const logger = require('../Log/Logger.js');
+
 var apiKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiIwZjk5OTFiMC1kNGUzLTExZWMtYmViYi0wOTUyMTdlNmY3ZDUiLCJzdWIiOiJTSE9VVE9VVF9BUElfVVNFUiIsImlhdCI6MTY1MjY4MzIyMiwiZXhwIjoxOTY4MzAyNDIyLCJzY29wZXMiOnsiYWN0aXZpdGllcyI6WyJyZWFkIiwid3JpdGUiXSwibWVzc2FnZXMiOlsicmVhZCIsIndyaXRlIl0sImNvbnRhY3RzIjpbInJlYWQiLCJ3cml0ZSJdfSwic29fdXNlcl9pZCI6IjY4MDE1Iiwic29fdXNlcl9yb2xlIjoidXNlciIsInNvX3Byb2ZpbGUiOiJhbGwiLCJzb191c2VyX25hbWUiOiIiLCJzb19hcGlrZXkiOiJub25lIn0.U_m2CPK2xVilqVHN6PMxwkaRaTUXjAD0v13HDcDPv5k';
 
 var debug = true, verifySSL = false;
@@ -77,6 +79,7 @@ let user = await User.findOne({ email });
 
     } catch (err) {
     console.error(err);
+    logger.error(err.message);
     apiResponse.ServerError(res,"Server Error",{err:err});
     }
 };
@@ -90,6 +93,7 @@ const getUsers = async (req, res) => {
     const users = await User.find();
     apiResponse.Success(res,"All Users Retrive Success",{users: users });
   } catch (error) {
+    logger.error(error.message);
     apiResponse.ServerError(res,"Server Error",{err:error});
   }
 };
@@ -99,6 +103,7 @@ const getOneUser = async (req, res) => {
     const user = await User.findById(req.params.id);
     apiResponse.Success(res,"All Users Retrive Success",{users: users });
   } catch (error) {
+    logger.error(error.message);
     apiResponse.ServerError(res,"Server Error",{err:error});
   }
 };
@@ -117,6 +122,7 @@ const updateUserInstructor = async (req, res) => {
   apiResponse.Success(res,"User Instructor Updated", {data:data});
 
   } catch (error) {
+    logger.error(error.message);
     apiResponse.ServerError(res,"Server Error",{err:error});
   }
 }
@@ -135,6 +141,7 @@ const updateUserMemberShip = async (req, res) => {
   apiResponse.Success(res,"User memberShip Updated", {data:data});
 
   } catch (error) {
+    logger.error(error.message);
     apiResponse.ServerError(res,"Server Error",{err:error});
   }
 }
@@ -160,6 +167,7 @@ const updateUser = async (req, res) => {
   apiResponse.Success(res,"User Details Updated", {data:data});
 
   } catch (error) {
+    logger.error(error.message);
     apiResponse.ServerError(res,"Server Error",{err:error});
   }
 }
@@ -209,7 +217,7 @@ const getUserWorkOutAndDietPlans = async (req, res) => {
 
 
   } catch (error) {
-
+    logger.error(error.message);
   }
 
 

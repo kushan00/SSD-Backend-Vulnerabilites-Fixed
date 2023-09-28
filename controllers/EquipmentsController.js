@@ -10,7 +10,7 @@ const equipmentsModel = require("../models/equipmentsModel");
                  
         apiResponse.Success(res,"Equipments",{ equipments: equipments })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -24,7 +24,7 @@ const equipmentsModel = require("../models/equipmentsModel");
         
         apiResponse.Success(res,"Equipment",{ equipment: equipment })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -40,7 +40,7 @@ const equipmentsModel = require("../models/equipmentsModel");
         
         apiResponse.Success(res,"NewEquipment",{ newEquipment: newEquipment })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }

@@ -8,6 +8,8 @@ const User = require("../models/userModel.js");
 const Admin = require("../models/adminModel.js");
 const Instructor = require("../models/instructorModel.js");
 
+const logger = require('../Log/Logger.js');
+
 var jwtSecret = "mysecrettoken";
 
 const registerUser = async (req, res) => {
@@ -66,7 +68,7 @@ const registerUser = async (req, res) => {
       apiResponse.Success(res,"Register Success",{ token, userRole: user.userRole, user: user.fullName , userID : user.gym_id , _id:user?._id  })
     });
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     apiResponse.ServerError(res,"Server Error",{err:err});
   }
 };
@@ -89,7 +91,7 @@ const authUser = async (req, res) => {
     }
     apiResponse.Success(res,"Auth Success",{ user: user })
   } catch (err) {
-    console.error(err.message);
+    logger.error(err.message);
     apiResponse.ServerError(res,"Server Error",{err:err});
   }
 };
@@ -135,7 +137,7 @@ const loginUser = async (req, res) => {
       apiResponse.Success(res,"Login Success",{ token, userRole: user.userRole , user: user.fullName , userID : user?.gym_id ? user?.gym_id : "" , _id:user?._id  })
     });
   } catch (err) {
-    console.log(err.message);
+    logger.error(err.message);
     apiResponse.ServerError(res,"Server Error",{err:err});
   }
 };
@@ -159,6 +161,7 @@ const updateAdmin = async (req, res) => {
   apiResponse.Success(res,"Admin Details Updated", {data:data});
 
   } catch (error) {
+    logger.error(error.message);
     apiResponse.ServerError(res,"Server Error",{err:error});
   }
 }

@@ -10,7 +10,7 @@ const getWorkouts = async (req, res) => {
     
         apiResponse.Success(res, "Workouts", { workouts: workouts });
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res, "Server Error", { err: err });
     }
     };
@@ -24,7 +24,7 @@ const getWorkout = async (req, res) => {
 
         apiResponse.Success(res, "Workout", { workout: workout });
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res, "Server Error", { err: err });
     }
 }
@@ -39,7 +39,7 @@ const createWorkout = async (req, res) => {
 
         apiResponse.Success(res, "NewWorkout", { newWorkout: newWorkout });
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res, "Server Error", { err: err });
     }
 }

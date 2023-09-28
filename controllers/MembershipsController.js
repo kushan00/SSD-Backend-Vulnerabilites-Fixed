@@ -10,7 +10,7 @@ const membershipModel = require("../models/membershipModel");
                  
         apiResponse.Success(res,"Memberships",{ memberships: memberships })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -24,7 +24,7 @@ const membershipModel = require("../models/membershipModel");
         
         apiResponse.Success(res,"Membership",{ membership: membership })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -40,7 +40,7 @@ const membershipModel = require("../models/membershipModel");
         
         apiResponse.Success(res,"New Membership",{ newMembership: newMembership })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }

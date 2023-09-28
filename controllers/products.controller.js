@@ -1,5 +1,6 @@
 const productsServices = require("../services/products.services");
 const upload = require("../middlewares/upload");
+const logger = require('../Log/Logger.js');
 
 // Create and Save a new Product
 exports.create = (req, res, next) => {
@@ -15,6 +16,7 @@ exports.create = (req, res, next) => {
 
       productsServices.createProduct(model, (error, results) => {
         if (error) {
+          logger.error(error.message);
           return next(error);
         }
         return res.status(200).send({
@@ -33,6 +35,7 @@ exports.findAll = (req, res, next) => {
 
   productsServices.getProducts(model, (error, results) => {
     if (error) {
+      logger.error(error.message);
       return next(error);
     }
     return res.status(200).send({
@@ -50,6 +53,7 @@ exports.findOne = (req, res, next) => {
 
   productsServices.getProductById(model, (error, results) => {
     if (error) {
+      logger.error(error.message);
       return next(error);
     }
     return res.status(200).send({
@@ -76,6 +80,7 @@ exports.update = (req, res, next) => {
 
       productsServices.updateProduct(model, (error, results) => {
         if (error) {
+          logger.error(error.message);
           return next(error);
         }
         return res.status(200).send({
@@ -94,6 +99,7 @@ exports.delete = (req, res, next) => {
 
   productsServices.deleteProduct(model, (error, results) => {
     if (error) {
+      logger.error(error.message);
       return next(error);
     }
     return res.status(200).send({

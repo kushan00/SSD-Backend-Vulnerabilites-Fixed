@@ -2,6 +2,8 @@ const router = require("express").Router();
 const Cart = require("../models/Cart");
 const Item = require("../models/Item");
 
+const logger = require('../Log/Logger.js');
+
 //add item to cart
 router.route("/add").post(async (req, res) => {
   try {
@@ -27,6 +29,7 @@ router.route("/add").post(async (req, res) => {
     res.json(newCart);
   } catch (error) {
     console.log(error);
+    logger.error(error.message);
   }
 });
 
@@ -38,6 +41,7 @@ router.route("/").get((req, res) => {
     })
     .catch((err) => {
       console.log(err);
+      logger.error(err.message);
     });
 });
 
@@ -50,6 +54,7 @@ router.route("/delete").delete(async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    logger.error(error.message);
   }
 });
 
@@ -62,6 +67,7 @@ router.route("/delete/:id").delete(async (req, res) => {
     res.json({ message: "Cart deleted" });
   } catch (error) {
     console.log(error);
+    logger.error(error.message);
   }
 });
 
@@ -75,6 +81,7 @@ router.route("/delete/item/:id").delete(async (req, res) => {
     console.log("Item deleted");
   } catch (error) {
     console.log(error);
+    logger.error(error.message);
   }
 });
 
@@ -89,6 +96,7 @@ router.route("/get/:id").get(async (req, res) => {
     res.json(cart);
   } catch (error) {
     console.log(error);
+    logger.error(error.message);
   }
 });
 
