@@ -5,6 +5,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const logger = require('./Log/Logger.js');
 const notifier = require('node-notifier');
+const session = require('express-session');
 
 dotenv.config();
 
@@ -19,6 +20,16 @@ app.use(
     credentials:true
   })
 );
+
+app.use(session({
+  secret: process.env.KEY,
+  resave: false,
+  saveUninitialized: true,
+  cookie: {
+    secure: true, // Set to true for HTTPS
+    maxAge: 3600000, // Session timeout in milliseconds (e.g., 1 hour)
+  },
+}))
 
 const PORT = process.env.PORT || 5000;
 
