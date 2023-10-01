@@ -17,7 +17,7 @@ var ShoutoutClient = require('shoutout-sdk');
             const instructors = await instructorModel.find();
             apiResponse.Success(res,"Instructors",{ instructors: instructors })
         } catch (err) {
-            console.error(err.message);
+            logger.error(err.message);
             apiResponse.ServerError(res,"Server Error",{err:err});
         }
     }
@@ -29,7 +29,7 @@ var ShoutoutClient = require('shoutout-sdk');
             const instructor = await instructorModel.findById(id);
             apiResponse.Success(res,"Instructor",{ instructor: instructor })
         } catch (err) {
-            console.error(err.message);
+            logger.error(err.message);
             apiResponse.ServerError(res,"Server Error",{err:err});
         }
     }
@@ -87,7 +87,7 @@ var ShoutoutClient = require('shoutout-sdk');
             await newInstructor.save();
             apiResponse.Success(res,"NewInstructor",{ newInstructor: newInstructor , password:password })
         } catch (err) {
-            console.error(err.message);
+            logger.error(err.message);
             apiResponse.ServerError(res,"Server Error",{err:err});
         }
     }

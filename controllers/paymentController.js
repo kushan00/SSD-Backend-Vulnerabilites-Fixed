@@ -10,7 +10,7 @@ const paymentModel = require("../models/paymentModel");
                  
         apiResponse.Success(res,"payments",{ payments: payments })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -24,7 +24,7 @@ const paymentModel = require("../models/paymentModel");
         
         apiResponse.Success(res,"payment",{ payment: payment })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -40,7 +40,7 @@ const paymentModel = require("../models/paymentModel");
         
         apiResponse.Success(res,"NewPayment",{ newPayment: newPayment })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }

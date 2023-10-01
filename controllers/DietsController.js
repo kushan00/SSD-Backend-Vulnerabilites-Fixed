@@ -10,7 +10,7 @@ const getDiets = async (req, res) => {
 
         apiResponse.Success(res, "Diets", { diets: diets });
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res, "Server Error", { err: err });
     }
 };
@@ -24,7 +24,7 @@ const getDiet = async (req, res) => {
 
         apiResponse.Success(res, "Diet", { diet: diet });
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res, "Server Error", { err: err });
     }
 };
@@ -39,7 +39,7 @@ const createDiet = async (req, res) => {
 
         apiResponse.Success(res, "NewDiet", { newDiet: newDiet });
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res, "Server Error", { err: err });
     }
 };

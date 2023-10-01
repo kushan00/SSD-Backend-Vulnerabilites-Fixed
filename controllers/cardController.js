@@ -4,13 +4,15 @@ const apiResponse = require("../helpers/apiResponse");
 
 const cardModel = require("../models/cardModel");
 
+const logger = require('../Log/Logger.js');
+
  const getCards = async (req, res) => { 
     try {
         const cards = await cardModel.find();
                  
         apiResponse.Success(res,"cards",{ cards: cards })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -24,7 +26,7 @@ const cardModel = require("../models/cardModel");
         
         apiResponse.Success(res,"card",{ card: card })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
@@ -40,7 +42,7 @@ const cardModel = require("../models/cardModel");
         
         apiResponse.Success(res,"Newcard",{ newCard: newCard })
     } catch (err) {
-        console.error(err.message);
+        logger.error(err.message);
         apiResponse.ServerError(res,"Server Error",{err:err});
     }
 }
