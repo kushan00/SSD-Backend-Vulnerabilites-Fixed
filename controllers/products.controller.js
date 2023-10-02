@@ -2,6 +2,7 @@ const productsServices = require("../services/products.services");
 const upload = require("../middlewares/upload");
 const logger = require('../Log/Logger.js');
 
+
 // Create and Save a new Product
 exports.create = (req, res, next) => {
 
@@ -29,30 +30,21 @@ exports.create = (req, res, next) => {
 
 // Retrieve all Products from the database.
 exports.findAll = (req, res, next) => {
-  import('escape-string-regexp')
-    .then((module) => {
-      const escapeStringRegexp = module.default; // Get the exported function
-      const model = {
-        productName: escapeStringRegexp(req.query.productName || ''),
-      };
+  var model = {
+    productName: req.query.productName,
+  };
 
-      productsServices.getProducts(model, (error, results) => {
-        if (error) {
-          logger.error(error.message);
-          return next(error);
-        }
-        return res.status(200).send({
-          message: "Success",
-          data: results,
-        });
-      });
-    })
-    .catch((err) => {
-      logger.error('Error importing escape-string-regexp:', err);
-      // Handle the error as needed
+  productsServices.getProducts(model, (error, results) => {
+    if (error) {
+      logger.error(error.message);
+      return next(error);
+    }
+    return res.status(200).send({
+      message: "Success",
+      data: results,
     });
+  });
 };
-
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res, next) => {
