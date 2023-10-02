@@ -15,7 +15,7 @@ module.exports = function (req, res, next) {
     .has().lowercase()  // Must have at least one lowercase letter
     .has().digits()  // Must have at least one digit
     .has().symbols()  // Must have at least one special character
-    .is().not().oneOf(['password', '12345678']);  // Cannot be a common password
+    .is().not().oneOf(['password']);  // Cannot be a common password
 
     // Validate a password
     const isPasswordValid = passwordSchema.validate(password);
