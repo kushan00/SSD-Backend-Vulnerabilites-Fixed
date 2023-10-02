@@ -29,21 +29,30 @@ exports.create = (req, res, next) => {
 
 // Retrieve all Products from the database.
 exports.findAll = (req, res, next) => {
-  var model = {
-    productName: req.query.productName,
-  };
+  import('escape-string-regexp')
+    .then((module) => {
+      const escapeStringRegexp = module.default; // Get the exported function
+      const model = {
+        productName: escapeStringRegexp(req.query.productName || ''),
+      };
 
-  productsServices.getProducts(model, (error, results) => {
-    if (error) {
-      logger.error(error.message);
-      return next(error);
-    }
-    return res.status(200).send({
-      message: "Success",
-      data: results,
+      productsServices.getProducts(model, (error, results) => {
+        if (error) {
+          logger.error(error.message);
+          return next(error);
+        }
+        return res.status(200).send({
+          message: "Success",
+          data: results,
+        });
+      });
+    })
+    .catch((err) => {
+      logger.error('Error importing escape-string-regexp:', err);
+      // Handle the error as needed
     });
-  });
 };
+
 
 // Find a single Tutorial with an id
 exports.findOne = (req, res, next) => {

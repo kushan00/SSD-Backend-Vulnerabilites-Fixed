@@ -48,7 +48,7 @@ const updateWorkout = async (req, res) => {
     const { id } = req.params;
     const { user_id, workout_id, workout_type, exercise1, exercise2, exercise3, exercise4, exercise5, exercise6 } = req.body;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+    if (!mongoose.Types.ObjectId.isValid(id)) return apiResponse.NotFound(res,`No post with id: ${id}`,{ err: "Error" });
 
     const updatedWorkout = { user_id, workout_id, workout_type, exercise1, exercise2, exercise3, exercise4, exercise5, exercise6, _id: id };
 
@@ -61,7 +61,7 @@ const deleteWorkout = async (req, res) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id))
-        return res.status(404).send(`No post with id: ${id}`);
+        return apiResponse.NotFound(res,`No post with id: ${id}`,{ err: "Error" });
 
     await workoutModel.findByIdAndRemove(id);
 

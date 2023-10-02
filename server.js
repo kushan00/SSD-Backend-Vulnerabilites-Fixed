@@ -8,8 +8,8 @@ const notifier = require('node-notifier');
 const session = require('express-session');
 const admin = require('firebase-admin');
 const serviceAccount = require('./utils/ssd-frontend-firebase-adminsdk-3bwg7-5e9826cf99.json'); // Specify the correct path
-
-
+const helmet = require("helmet");
+const csrf = require("csurf");
 
 dotenv.config();
 
@@ -29,6 +29,11 @@ app.use(
     credentials:true
   })
 );
+
+
+app.use(helmet());
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
 
 app.use(session({
   secret: process.env.KEY,
