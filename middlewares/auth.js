@@ -1,6 +1,10 @@
 const jwt = require("jsonwebtoken");
+const dotenv = require("dotenv");
 
-var jwtSecret = "mysecrettoken";
+/* Loading the environment variables from the .env file. */
+dotenv.config();
+
+var jwtSecret = process.env.KEY;
 
 module.exports = function (req, res, next) {
 	//Get token from header

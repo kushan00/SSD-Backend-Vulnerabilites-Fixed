@@ -14,16 +14,22 @@ const Instructor = require("../models/instructorModel.js");
 
 const logger = require('../Log/Logger.js');
 
+const admin = require('firebase-admin');
+
 const speakeasy = require("speakeasy");
 var ShoutoutClient = require("shoutout-sdk");
 
-var apiKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMTBiMTc2MC01ZTliLTExZWUtODkwMi0zZjA0M2QxZjAwNDEiLCJzdWIiOiJTSE9VVE9VVF9BUElfVVNFUiIsImlhdCI6MTY5NTk3MzMyNywiZXhwIjoyMDExNTkyNTI3LCJzY29wZXMiOnsiYWN0aXZpdGllcyI6WyJyZWFkIiwid3JpdGUiXSwibWVzc2FnZXMiOlsicmVhZCIsIndyaXRlIl0sImNvbnRhY3RzIjpbInJlYWQiLCJ3cml0ZSJdfSwic29fdXNlcl9pZCI6IjU3NDQ1NiIsInNvX3VzZXJfcm9sZSI6InVzZXIiLCJzb19wcm9maWxlIjoiYWxsIiwic29fdXNlcl9uYW1lIjoiIiwic29fYXBpa2V5Ijoibm9uZSJ9.T7xpeoZqZtF6R5zwHFr96rMb_FmsQ2eah-h6Dnzdv_A";
+const dotenv = require("dotenv");
 
+/* Loading the environment variables from the .env file. */
+dotenv.config();
+
+
+var apiKey = process.env.APIKEY; 
 var debug = true;
 var verifySSL = false;
 
-var jwtSecret = "mysecrettoken";
+var jwtSecret = process.env.KEY;
 
 
 
@@ -65,9 +71,9 @@ const registerUser = async (req, res) => {
     });
 
     //Encrypt Password
-    const salt = await bcrypt.genSalt(10);
+    // const salt = await bcrypt.genSalt(10);
 
-    user.password = await bcrypt.hash(password, salt);
+    // user.password = await bcrypt.hash(password, salt);
 
     await user.save();
 
@@ -320,6 +326,73 @@ const verifyUserOTP = async (req, res) => {
 };
 
 
+const verifyOAuthLogins = async (req, res) => {
+  const { idToken } = req.body;
+
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then(async (decodedToken) => {
+      console.log("decodedToken data \n",decodedToken);
+      var fullName = decodedToken.name;
+      var email = decodedToken.email;
+      let user = await User.findOne({ email });
+      var password= process.env.SEEDPASSWORD;  
+      var mobileno= "00"; 
+      var dateOfBirth= "00";
+      var weight= "00";
+      var height= "00";
+
+    if (user) {
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+  
+      jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+        if (err) throw err;
+        apiResponse.Success(res,"Login Success",{ token, userRole: user.userRole, user: user.fullName , userID : user.gym_id , _id:user?._id  })
+      });
+      return 0; 
+    }
+
+    // generating user unique gym id
+    var gym_id = await uniqueID.generateID();
+
+    user = new User({
+        gym_id,
+        fullName, 
+        email, 
+        password,  
+        mobileno, 
+        dateOfBirth,
+        weight,
+        height, 
+    });
+
+
+    await user.save();
+
+    //Return jsonwebtoken
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+      if (err) throw err;
+      apiResponse.Success(res,"Login Success",{ token, userRole: user.userRole, user: user.fullName , userID : user.gym_id , _id:user?._id  })
+    });
+    })
+    .catch((error) => {
+      // Handle verification error
+      console.error(error);
+      res.status(401).json({ error: 'Authentication failed' });
+    });
+}
+
 
 module.exports = {
   registerUser,
@@ -327,5 +400,6 @@ module.exports = {
   loginUser,
   updateAdmin,
   sendUserOTP,
-  verifyUserOTP
+  verifyUserOTP,
+  verifyOAuthLogins
 };
