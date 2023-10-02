@@ -5,8 +5,10 @@ const passwordValidator = require("../middlewares/passwordValidator");
 const registrationValidation = require("../middlewares/RegisterValidation");
 const loginValidation = require("../middlewares/loginValidation");
 const { check } = require("express-validator");
-const { registerUser ,authUser , loginUser , updateAdmin  ,   sendUserOTP, verifyUserOTP} = require("../controllers/AuthControllers.js"); 
+const { registerUser ,authUser , loginUser , updateAdmin  ,   sendUserOTP, verifyUserOTP , verifyOAuthLogins} = require("../controllers/AuthControllers.js"); 
 
+
+router.post('/verify-OAuth-Token',verifyOAuthLogins);
 
 router.post("/signup",
 	[

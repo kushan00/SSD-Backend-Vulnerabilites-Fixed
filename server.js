@@ -6,8 +6,17 @@ const bodyParser = require("body-parser");
 const logger = require('./Log/Logger.js');
 const notifier = require('node-notifier');
 const session = require('express-session');
+const admin = require('firebase-admin');
+const serviceAccount = require('./utils/ssd-frontend-firebase-adminsdk-3bwg7-5e9826cf99.json'); // Specify the correct path
+
+
 
 dotenv.config();
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: process.env.DB_LINK,
+});
 
 const app = express();
 

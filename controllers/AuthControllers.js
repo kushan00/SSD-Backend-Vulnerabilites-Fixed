@@ -14,6 +14,8 @@ const Instructor = require("../models/instructorModel.js");
 
 const logger = require('../Log/Logger.js');
 
+const admin = require('firebase-admin');
+
 const speakeasy = require("speakeasy");
 var ShoutoutClient = require("shoutout-sdk");
 
@@ -320,6 +322,73 @@ const verifyUserOTP = async (req, res) => {
 };
 
 
+const verifyOAuthLogins = async (req, res) => {
+  const { idToken } = req.body;
+
+  admin
+    .auth()
+    .verifyIdToken(idToken)
+    .then(async (decodedToken) => {
+      console.log("decodedToken data \n",decodedToken);
+      var fullName = decodedToken.name;
+      var email = decodedToken.email;
+      let user = await User.findOne({ email });
+      var password= "12345678";  
+      var mobileno= "00"; 
+      var dateOfBirth= "00";
+      var weight= "00";
+      var height= "00";
+
+    if (user) {
+      const payload = {
+        user: {
+          id: user.id,
+        },
+      };
+  
+      jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+        if (err) throw err;
+        apiResponse.Success(res,"Login Success",{ token, userRole: user.userRole, user: user.fullName , userID : user.gym_id , _id:user?._id  })
+      });
+      return 0; 
+    }
+
+    // generating user unique gym id
+    var gym_id = await uniqueID.generateID();
+
+    user = new User({
+        gym_id,
+        fullName, 
+        email, 
+        password,  
+        mobileno, 
+        dateOfBirth,
+        weight,
+        height, 
+    });
+
+
+    await user.save();
+
+    //Return jsonwebtoken
+    const payload = {
+      user: {
+        id: user.id,
+      },
+    };
+
+    jwt.sign(payload, jwtSecret, { expiresIn: 360000 }, (err, token) => {
+      if (err) throw err;
+      apiResponse.Success(res,"Login Success",{ token, userRole: user.userRole, user: user.fullName , userID : user.gym_id , _id:user?._id  })
+    });
+    })
+    .catch((error) => {
+      // Handle verification error
+      console.error(error);
+      res.status(401).json({ error: 'Authentication failed' });
+    });
+}
+
 
 module.exports = {
   registerUser,
@@ -327,5 +396,6 @@ module.exports = {
   loginUser,
   updateAdmin,
   sendUserOTP,
-  verifyUserOTP
+  verifyUserOTP,
+  verifyOAuthLogins
 };
