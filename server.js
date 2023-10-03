@@ -9,6 +9,7 @@ const session = require('express-session');
 const admin = require('firebase-admin');
 const serviceAccount = require('./utils/ssd-frontend-firebase-adminsdk-3bwg7-5e9826cf99.json'); // Specify the correct path
 
+const xss = require("xss-clean");
 
 
 dotenv.config();
@@ -39,6 +40,9 @@ app.use(session({
     maxAge: 3600000, // Session timeout in milliseconds (e.g., 1 hour)
   },
 }))
+
+// Prevent XSS attacks
+app.use(xss());
 
 const PORT = process.env.PORT || 5000;
 
