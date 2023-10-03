@@ -11,6 +11,8 @@ const serviceAccount = require('./utils/ssd-frontend-firebase-adminsdk-3bwg7-5e9
 
 const xss = require("xss-clean");
 
+const helmet = require("helmet");
+const csrf = require("csurf");
 
 dotenv.config();
 
@@ -30,6 +32,13 @@ app.use(
     credentials:true
   })
 );
+
+// ramith
+app.use(helmet());
+
+// nethmi
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
 
 app.use(session({
   secret: process.env.KEY,

@@ -21,11 +21,25 @@ async function createProduct(params, callback) {
     });
 }
 
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 async function getProducts(params, callback) {
   const productName = params.productName;
-  var condition = productName
-    ? { productName: { $regex: new RegExp(productName), $options: "i" } }
-    : {};
+
+    // Sanitize and validate the productName input
+    if (!productName || typeof productName !== 'string') {
+      const error = new Error('Invalid input: productName is required and must be a string');
+      return callback(error);
+    }
+
+    // Escape special characters in the user-provided input to prevent ReDoS
+    const sanitizedProductName = escapeRegExp(productName);
+
+    const condition = {
+      productName: { $regex: new RegExp(sanitizedProductName, 'i') }
+    };
 
   product
     .find(condition)

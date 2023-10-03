@@ -24,13 +24,13 @@ const seedAdmins = [
     fullName: "admin",
     email: "admin@gmail.com",
     mobileno: "+94715391491",
-    password: "$2a$10$kyDfuM.pQv/lbOQlyU.4Geycmv42dnN1O7nrGQku9kxrhwGd0dV9a", //123@Testing
+    password: process.env.SEEDPASSWORD, //123@Testing
   },
   {
     fullName: "admin2",
     email: "admin2@gmail.com",
     mobileno: "94715391491",
-    password: "$2a$10$kyDfuM.pQv/lbOQlyU.4Geycmv42dnN1O7nrGQku9kxrhwGd0dV9a", //123@Testing
+    password: process.env.SEEDPASSWORD, //123@Testing
   },
 ];
 

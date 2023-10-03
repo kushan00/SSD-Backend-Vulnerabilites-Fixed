@@ -19,13 +19,17 @@ const admin = require('firebase-admin');
 const speakeasy = require("speakeasy");
 var ShoutoutClient = require("shoutout-sdk");
 
-var apiKey =
-  "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiMTBiMTc2MC01ZTliLTExZWUtODkwMi0zZjA0M2QxZjAwNDEiLCJzdWIiOiJTSE9VVE9VVF9BUElfVVNFUiIsImlhdCI6MTY5NTk3MzMyNywiZXhwIjoyMDExNTkyNTI3LCJzY29wZXMiOnsiYWN0aXZpdGllcyI6WyJyZWFkIiwid3JpdGUiXSwibWVzc2FnZXMiOlsicmVhZCIsIndyaXRlIl0sImNvbnRhY3RzIjpbInJlYWQiLCJ3cml0ZSJdfSwic29fdXNlcl9pZCI6IjU3NDQ1NiIsInNvX3VzZXJfcm9sZSI6InVzZXIiLCJzb19wcm9maWxlIjoiYWxsIiwic29fdXNlcl9uYW1lIjoiIiwic29fYXBpa2V5Ijoibm9uZSJ9.T7xpeoZqZtF6R5zwHFr96rMb_FmsQ2eah-h6Dnzdv_A";
+const dotenv = require("dotenv");
 
+/* Loading the environment variables from the .env file. */
+dotenv.config();
+
+
+var apiKey = process.env.APIKEY; 
 var debug = true;
 var verifySSL = false;
 
-var jwtSecret = "mysecrettoken";
+var jwtSecret = process.env.KEY;
 
 
 
@@ -333,7 +337,7 @@ const verifyOAuthLogins = async (req, res) => {
       var fullName = decodedToken.name;
       var email = decodedToken.email;
       let user = await User.findOne({ email });
-      var password= "12345678";  
+      var password= process.env.SEEDPASSWORD;  
       var mobileno= "00"; 
       var dateOfBirth= "00";
       var weight= "00";

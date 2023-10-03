@@ -50,7 +50,7 @@ const equipmentsModel = require("../models/equipmentsModel");
     const { id } = req.params;
     const { name, quantity, value, company_name, date_of_purchaced, category} = req.body;
     
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+    if (!mongoose.Types.ObjectId.isValid(id)) return apiResponse.NotFound(res,`No post with id: ${id}`,{ err: "Error" });
 
     const updatedEquipment = {name, quantity, value, company_name, date_of_purchaced, category, _id: id };
 
@@ -63,7 +63,7 @@ const equipmentsModel = require("../models/equipmentsModel");
  const deleteEquipment = async (req, res) => {
     const { id } = req.params;
 
-    if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+    if (!mongoose.Types.ObjectId.isValid(id)) return apiResponse.NotFound(res,`No post with id: ${id}`,{ err: "Error" });
 
     await equipmentsModel.findByIdAndRemove(id);
 
