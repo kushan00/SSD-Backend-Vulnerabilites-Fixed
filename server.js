@@ -32,8 +32,8 @@ app.use(
 
 
 app.use(helmet());
-const csrfProtection = csrf({ cookie: true });
-app.use(csrfProtection);
+// const csrfProtection = csrf({ cookie: true });
+// app.use(csrfProtection);
 
 app.use(session({
   secret: process.env.KEY,

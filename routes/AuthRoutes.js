@@ -29,8 +29,8 @@ router.post(
 		check("email", "Please include a valid email").isEmail(),
 		check("password", "Password is required").exists(),
 	],
-  loginValidation,
-	passwordValidator,
+//   loginValidation,
+	// passwordValidator,
 	loginUser);
 
 router.post("/send-otp",sendUserOTP);
@@ -45,7 +45,7 @@ router.post(
     check("email", "Please include a valid email").isEmail(),
     check("password", "Password is required").exists(),
   ],
-  loginValidation,
+//   loginValidation,
   loginUser
 );
 
