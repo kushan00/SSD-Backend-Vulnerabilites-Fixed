@@ -1,20 +1,23 @@
-const xss = require("xss");
-
-// Sanitization function using xss
-const sanitize = (input) => xss(input);
-
 module.exports = function (req, res, next) {
   try {
-    // Check if email and password exist in the request body
     if (req.body.email) {
-      req.body.email = sanitize(req.body.email);
+      if (!isValidInput(req.body.email)) {
+        throw new Error("Invalid input in email");
+      }
     }
     if (req.body.password) {
-      req.body.password = sanitize(req.body.password);
-    }  
+      if (!isValidInput(req.body.password)) {
+        throw new Error("Invalid input in password");
+      }
+    }
 
     next();
   } catch (err) {
     res.status(401).json({ msg: "Input is not acceptable" });
   }
 };
+
+function isValidInput(input) {
+  const htmlPattern = /<[^>]*>/;
+  return !htmlPattern.test(input);
+}

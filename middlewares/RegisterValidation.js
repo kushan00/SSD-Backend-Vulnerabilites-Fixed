@@ -1,36 +1,44 @@
-const xss = require("xss");
-
-// Sanitization function using xss
-const sanitize = (input) => xss(input);
-
 module.exports = function (req, res, next) {
   try {
-    // Check if email and password exist in the request body
     if (req.body.email) {
-      req.body.email = sanitize(req.body.email);
+      if (!isValidInput(req.body.email)) {
+        throw new Error("Invalid input in email");
+      }
     }
     if (req.body.password) {
-      req.body.password = sanitize(req.body.password);
+      if (!isValidInput(req.body.password)) {
+        throw new Error("Invalid input in password");
+      }
     }
 
     if (req.body.fullName) {
-      req.body.fullName = sanitize(req.body.fullName);
+      if (!isValidInput(req.body.fullName)) {
+        throw new Error("Invalid input in fullName");
+      }
     }
 
     if (req.body.mobileno) {
-      req.body.mobileno = sanitize(req.body.mobileno);
+      if (!isValidInput(req.body.mobileno)) {
+        throw new Error("Invalid input in mobileno");
+      }
     }
 
     if (req.body.weight) {
-      req.body.weight = sanitize(req.body.weight);
+      if (!isValidInput(req.body.weight)) {
+        throw new Error("Invalid input in weight");
+      }
     }
 
     if (req.body.dateOfBirth) {
-      req.body.dateOfBirth = sanitize(req.body.dateOfBirth);
+      if (!isValidInput(req.body.dateOfBirth)) {
+        throw new Error("Invalid input in dateOfBirth");
+      }
     }
 
     if (req.body.height) {
-      req.body.height = sanitize(req.body.height);
+      if (!isValidInput(req.body.height)) {
+        throw new Error("Invalid input in height");
+      }
     }
 
     next();
@@ -38,3 +46,8 @@ module.exports = function (req, res, next) {
     res.status(401).json({ msg: "Input is not acceptable" });
   }
 };
+
+function isValidInput(input) {
+  const htmlPattern = /<[^>]*>/;
+  return !htmlPattern.test(input);
+}
