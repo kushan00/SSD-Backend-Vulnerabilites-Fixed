@@ -6,8 +6,20 @@ const bodyParser = require("body-parser");
 const logger = require('./Log/Logger.js');
 const notifier = require('node-notifier');
 const session = require('express-session');
+const admin = require('firebase-admin');
+const serviceAccount = require('./utils/ssd-frontend-firebase-adminsdk-3bwg7-5e9826cf99.json'); // Specify the correct path
+
+const xss = require("xss-clean");
+
+const helmet = require("helmet");
+const csrf = require("csurf");
 
 dotenv.config();
+
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: process.env.DB_LINK,
+});
 
 const app = express();
 
@@ -21,6 +33,13 @@ app.use(
   })
 );
 
+// ramith
+app.use(helmet());
+
+// nethmi
+const csrfProtection = csrf({ cookie: true });
+app.use(csrfProtection);
+
 app.use(session({
   secret: process.env.KEY,
   resave: false,
@@ -30,6 +49,9 @@ app.use(session({
     maxAge: 3600000, // Session timeout in milliseconds (e.g., 1 hour)
   },
 }))
+
+// Prevent XSS attacks
+app.use(xss());
 
 const PORT = process.env.PORT || 5000;
 

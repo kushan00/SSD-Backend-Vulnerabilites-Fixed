@@ -2,6 +2,7 @@ const productsServices = require("../services/products.services");
 const upload = require("../middlewares/upload");
 const logger = require('../Log/Logger.js');
 
+
 // Create and Save a new Product
 exports.create = (req, res, next) => {
 

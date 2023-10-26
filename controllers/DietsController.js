@@ -49,7 +49,7 @@ const updateDiet = async (req, res) => {
     const { user_id, diet_id, workout_type, meal1, meal2, meal3, meal4, meal5, meal6  } = req.body;
 
     if (!mongoose.Types.ObjectId.isValid(id))
-        return res.status(404).send(`No post with id: ${id}`);
+        return apiResponse.NotFound(res,`No post with id: ${id}`,{ err: "Error" });
 
     const updatedDiet = { user_id, diet_id, workout_type, meal1, meal2, meal3, meal4, meal5, meal6, _id: id };
 
@@ -62,7 +62,7 @@ const deleteDiet = async (req, res) => {
     const { id } = req.params;
 
     if (!mongoose.Types.ObjectId.isValid(id))
-        return res.status(404).send(`No post with id: ${id}`);
+        return apiResponse.NotFound(res,`No post with id: ${id}`,{ err: "Error" });
 
     await dietModel.findByIdAndRemove(id);
 
